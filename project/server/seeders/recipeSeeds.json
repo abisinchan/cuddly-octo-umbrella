@@ -1,0 +1,93 @@
+[
+    {
+      "title": "Classic Chocolate Chip Cookies",
+      "ingredients": [
+        "2 1/4 cups all-purpose flour",
+        "1/2 teaspoon baking soda",
+        "1 cup unsalted butter, room temperature",
+        "1/2 cup granulated sugar",
+        "1 cup packed light-brown sugar",
+        "1 teaspoon salt",
+        "2 teaspoons pure vanilla extract",
+        "2 large eggs",
+        "2 cups semisweet and/or milk chocolate chips"
+      ],
+      "instructions": "1. Preheat oven to 350°F...\n",
+      "comments": [
+        { "commentText": "These cookies are my favorite!", "commentAuthor": "TastyChef_23" },
+        { "commentText": "I added some chopped nuts to mine.", "commentAuthor": "CulinaryExplorer" }
+      ]
+    },
+    {
+      "title": "Creamy Tomato Basil Soup",
+      "ingredients": [
+        "2 tablespoons olive oil",
+        "1 onion, chopped",
+        "2 cloves garlic, minced",
+        "28 oz canned whole tomatoes",
+        "2 cups vegetable broth",
+        "1/2 cup heavy cream",
+        "1/4 cup fresh basil leaves, chopped",
+        "Salt and pepper to taste"
+      ],
+      "instructions": "1. In a large pot, heat olive oil...\n",
+      "comments": [
+        { "commentText": "This soup was so comforting!", "commentAuthor": "RecipeHarmony" },
+        { "commentText": "I added a sprinkle of parmesan on top.", "commentAuthor": "GourmetGatherer" }
+      ]
+    },
+    {
+      "title": "Grilled Lemon Herb Chicken",
+      "ingredients": [
+        "4 boneless, skinless chicken breasts",
+        "1/4 cup olive oil",
+        "3 tablespoons lemon juice",
+        "2 cloves garlic, minced",
+        "1 teaspoon dried oregano",
+        "1 teaspoon dried thyme",
+        "Salt and pepper to taste"
+      ],
+      "instructions": "1. In a bowl, whisk together olive oil...\n",
+      "comments": [
+        { "commentText": "The chicken turned out so flavorful!", "commentAuthor": "SpicePalette" },
+        { "commentText": "I marinated the chicken overnight.", "commentAuthor": "CulinaryExplorer" }
+      ]
+    },
+    {
+      "title": "Vegetable Stir-Fry",
+      "ingredients": [
+        "2 cups broccoli florets",
+        "1 red bell pepper, sliced",
+        "1 yellow bell pepper, sliced",
+        "1 carrot, julienned",
+        "1 zucchini, sliced",
+        "1 cup snap peas",
+        "3 tablespoons soy sauce",
+        "1 tablespoon sesame oil",
+        "2 cloves garlic, minced"
+      ],
+      "instructions": "1. Heat sesame oil in a wok or large skillet...\n",
+      "comments": [
+        { "commentText": "Quick and healthy weeknight meal!", "commentAuthor": "RecipeHarmony" },
+        { "commentText": "I added some tofu for protein.", "commentAuthor": "GourmetGatherer" }
+      ]
+    },
+    {
+      "title": "Homemade Margherita Pizza",
+      "ingredients": [
+        "1 pound pizza dough",
+        "1/2 cup pizza sauce",
+        "1 1/2 cups shredded mozzarella cheese",
+        "1 tomato, sliced",
+        "Fresh basil leaves",
+        "2 tablespoons olive oil",
+        "Salt and pepper to taste"
+      ],
+      "instructions": "1. Preheat oven to 475°F...\n",
+      "comments": [
+        { "commentText": "The crust was perfectly crispy!", "commentAuthor": "TastyChef_23" },
+        { "commentText": "Added some sliced olives for extra flavor.", "commentAuthor": "SpicePalette" }
+      ]
+    }
+  ]
+  
