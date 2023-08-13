@@ -135,6 +135,7 @@ Mutation: {
       // Find and delete the specified recipe, if the authenticated user is its author
       const recipe = await Recipe.findOneAndDelete({
         _id: recipeId,
+       // createdBy: context.user.username,
       });
 
       // Remove the recipe's ID from the user's thoughts array
@@ -150,7 +151,6 @@ Mutation: {
     throw new AuthenticationError('You need to be logged in!');
   },
   
-
 
   // Resolver to remove a comment from a recipe
   removeComment: async (parent, { recipeId, commentId }, context) => {

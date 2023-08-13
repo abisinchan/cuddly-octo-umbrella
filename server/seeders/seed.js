@@ -14,26 +14,17 @@ db.once('open', async () => {
 
     // Create recipes and associate with users
     for (let i = 0; i < recipeSeeds.length; i++) {
-      const recipeSeed = recipeSeeds[i];
-      const user = users.find(user => user.username === recipeSeed.createdBy.username);
-
-      if (user) {
-        const recipe = await Recipe.create({
-          title: recipeSeed.title,
-          ingredients: recipeSeed.ingredients,
-          instructions: recipeSeed.instructions,
-          createdBy: user.username,
-          createdAt: recipeSeed.createdAt,
-          comments: recipeSeed.comments
-        });
-
-        user.recipes.push(recipe);
-        await user.save();
-
-        console.log(`Associated recipe "${recipeSeed.title}" with user "${user.username}"`);
-      }
+      const { _id, createdBy } = await Recipe.create(recipeSeeds[i]);
+      const user = await User.findOneAndUpdate(
+        { username: createdBy},
+        {
+          $addToSet: {
+            recipes: _id,
+          },
+        }
+      );
     }
-
+  
     console.log('Seeding completed successfully.');
   } catch (err) {
     console.error('Error seeding data:', err);

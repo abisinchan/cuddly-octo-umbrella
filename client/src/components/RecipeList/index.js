@@ -24,7 +24,7 @@ const RecipeList = ({
                 className="text-light"
                 to={`/recipes/${recipe._id}`} // 
               >
-                Created by {recipe._id} <br />
+                Created by {recipe.createdBy} <br />
                 <span style={{ fontSize: '1rem' }}>
                   Created on {recipe.createdAt}
                 </span>

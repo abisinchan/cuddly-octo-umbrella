@@ -13,9 +13,7 @@
       "2 cups semisweet and/or milk chocolate chips"
     ],
     "instructions": "1. Preheat oven to 350°F...\n",
-    "createdBy": {
-      "username": "SpicePalette"
-    },
+    "createdBy": "SpicePalette",
     "createdAt": "2023-08-10T12:34:56Z",
     "comments": [
       { "commentText": "These cookies are my favorite!", "commentAuthor": "TastyChef_23" },
@@ -35,9 +33,7 @@
       "Salt and pepper to taste"
     ],
     "instructions": "1. In a large pot, heat olive oil...\n",
-    "createdBy": {
-      "username": "TastyChef_23"
-    },
+    "createdBy":  "TastyChef_23",
     "createdAt": "2023-08-11T09:12:34Z",
     "comments": [
       { "commentText": "This soup was so comforting!", "commentAuthor": "RecipeHarmony" },
@@ -56,9 +52,7 @@
       "Salt and pepper to taste"
     ],
     "instructions": "1. In a bowl, whisk together olive oil...\n",
-    "createdBy": {
-      "username": "GourmetGatherer"
-    },
+    "createdBy": "GourmetGatherer",
     "createdAt": "2023-08-12T15:30:45Z",
     "comments": [
       { "commentText": "The chicken turned out so flavorful!", "commentAuthor": "SpicePalette" },
@@ -79,9 +73,7 @@
       "2 cloves garlic, minced"
     ],
     "instructions": "1. Heat sesame oil in a wok or large skillet...\n",
-    "createdBy": {
-      "username": "RecipeHarmony"
-    },
+    "createdBy": "RecipeHarmony",
     "createdAt": "2023-08-13T18:45:22Z",
     "comments": [
       { "commentText": "Quick and healthy weeknight meal!", "commentAuthor": "RecipeHarmony" },
@@ -100,9 +92,7 @@
       "Salt and pepper to taste"
     ],
     "instructions": "1. Preheat oven to 475°F...\n",
-    "createdBy": {
-      "username": "TastyChef_23"
-    },
+    "createdBy": "TastyChef_23",
     "createdAt": "2023-08-14T21:10:11Z",
     "comments": [
       { "commentText": "The crust was perfectly crispy!", "commentAuthor": "CulinaryExplorer" },
