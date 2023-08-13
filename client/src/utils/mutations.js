@@ -43,15 +43,16 @@ mutation AddRecipe($title: String!, $ingredients: [String]!, $instructions: Stri
 `;
 
 export const ADD_COMMENT = gql`
-  mutation AddComment($recipeId: ID!, $commentText: String, $commentAuthor: String) {
-    addComment(recipeId: $recipeId, commentText: $commentText, commentAuthor: $commentAuthor) {
+mutation AddComment($recipeId: ID!, $commentText: String!) {
+  addComment(recipeId: $recipeId, commentText: $commentText) {
+    _id
+    comments {
       _id
-      comments {
-        commentText
-        createdAt
-      }
+      commentText
+      createdAt
     }
   }
+}
 `;
 
 export const REMOVE_RECIPE = gql`

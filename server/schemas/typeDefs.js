@@ -6,7 +6,7 @@ type User {
   username: String
   email: String
   password: String
-  recipes: [Recipe]
+  recipes: [Recipe]!
 }
 
 type Recipe {
@@ -16,7 +16,7 @@ type Recipe {
   ingredients: [String]
   createdBy: User
   createdAt: String
-  comments: [Comment]
+  comments: [Comment]!
 }
 
 type Comment {

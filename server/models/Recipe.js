@@ -8,6 +8,7 @@ const recipeSchema = new Schema(
       required: true,
       minlength: 1,
       maxlength: 100,
+      trim: true,
     },
 
     ingredients: [{ 
@@ -24,7 +25,9 @@ const recipeSchema = new Schema(
       maxlength: 1000
     },
     createdBy: {
-      type: String
+      type: String,
+      required: true,
+      trim: true
  
     },
 
@@ -43,8 +46,8 @@ const recipeSchema = new Schema(
           maxlength: 280,
         },
         commentAuthor: {
-          String
-      
+          type: String,
+          required: true,
         },
         createdAt: {
           type: Date,

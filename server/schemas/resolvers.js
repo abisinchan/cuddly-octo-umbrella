@@ -104,23 +104,28 @@ Mutation: {
 
   // Resolver to add a new comment to a recipe
   addComment: async (parent, { recipeId, commentText }, context) => {
-    // Check if a user is authenticated
     if (context.user) {
-      // Add a new comment to the specified recipe
-      return Recipe.findOneAndUpdate(
-        { _id: recipeId },
-        {
-          $addToSet: {
-            comments: { commentText, commentAuthor: context.user.username },
+      try {
+        const updatedRecipe = await Recipe.findOneAndUpdate(
+          { _id: recipeId },
+          {
+            $addToSet: {
+              comments: { commentText, commentAuthor: context.user.username },
+            },
           },
-        },
-        {
-          new: true,          // Return the modified recipe
-          runValidators: true, // Run validation checks on the updated recipe
-        }
-      );
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+  
+        return updatedRecipe;
+      } catch (error) {
+        console.error(error);
+        throw new Error('Error adding comment');
+      }
     }
-    // Throw an error if user is not authenticated
+  
     throw new AuthenticationError('You need to be logged in!');
   },
 
