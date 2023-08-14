@@ -25,7 +25,7 @@ const RecipeRandom = ({
                 className="text-light"
                 to={`/recipes/${randomRecipe._id}`}
               >
-                Created by {randomRecipe.createdBy} <br />
+                Created by {randomRecipe.createdBy.username} <br />
                 <span style={{ fontSize: '1rem' }}>
                   Created on {randomRecipe.createdAt}
                 </span>

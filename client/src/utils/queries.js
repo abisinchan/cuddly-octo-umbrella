@@ -12,11 +12,18 @@ query Users {
       title
       ingredients
       instructions
+      createdBy {
+        username
+      }
       createdAt
       comments {
         _id
         commentText
         createdAt
+        commentAuthor {
+          _id
+          username
+        }
       }
     }
   }
@@ -24,26 +31,32 @@ query Users {
 `;
 
 export const QUERY_USER = gql`
-query User($username: String!) {
-    user(username: $username) {
+query User($userId: ID!) {
+  user(userId: $userId) {
+    _id
+    username
+    email
+    password
+    recipes {
       _id
-      username
-      email
-      password
-      recipes {
+      title
+      ingredients
+      instructions
+      createdBy {
+        username
+      }
+      createdAt
+      comments {
         _id
-        title
-        ingredients
-        instructions
-        createdAt
-        comments {
-          _id
-          commentText
-          createdAt
+        commentText
+        commentAuthor {
+          username
         }
+        createdAt
       }
     }
   }
+}
 `;
 export const QUERY_RECIPES = gql`
 query Recipes {
@@ -52,13 +65,14 @@ query Recipes {
     title
     ingredients
     instructions
+    createdBy {
+      username
+    }
     createdAt
     comments {
       _id
       commentText
       commentAuthor {
-        _id
-        email
         username
       }
       createdAt
@@ -74,6 +88,9 @@ query Recipe($recipeId: ID!) {
     title
     ingredients
     instructions
+    createdBy {
+      username
+    }
     createdAt
     comments {
       _id
@@ -84,24 +101,24 @@ query Recipe($recipeId: ID!) {
 }
 `;
 
-export const QUERY_ME = gql`
-query Me {
-    me {
-      _id
+export const QUERY_MYRECIPES = gql`
+query MyRecipes($userId: ID!) {
+  myRecipes(userId: $userId) {
+    _id
+    title
+    instructions
+    ingredients
+    createdBy {
       username
-      email
-      password
-      recipes {
-        _id
-        title
-        ingredients
-        instructions
-        createdAt
-        comments {
-          _id
-          commentText
-          createdAt
+    }
+    createdAt
+    comments {
+      _id
+      commentText
+      commentAuthor {
+        username
       }
+      createdAt
     }
   }
 }

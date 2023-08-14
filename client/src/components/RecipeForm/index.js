@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
 import { ADD_RECIPE } from '../../utils/mutations';
-import { QUERY_RECIPES, QUERY_ME } from '../../utils/queries';
+import { QUERY_RECIPES, QUERY_MYRECIPES } from '../../utils/queries';
 
 import Auth from '../../utils/auth';
 
@@ -26,11 +26,11 @@ const RecipeForm = () => {
       }
   
       // Read the 'me' data from the cache if available
-      const cachedMe = cache.readQuery({ query: QUERY_ME });
+      const cachedMe = cache.readQuery({ query: QUERY_MYRECIPES });
   
       // Update the 'me' data in the cache
       cache.writeQuery({
-        query: QUERY_ME,
+        query: QUERY_MYRECIPES,
         data: {
           me: {
             ...cachedMe?.me,

@@ -1,32 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const UserRecipeList = ({
+const RecipeList = ({
   recipes,
   title,
-  userId, // Pass the user's ID or username as a prop
   showTitle = true,
   showUsername = true,
 }) => {
-  // Filter recipes based on the provided userId
-  const userRecipes = recipes.filter(recipe => recipe.creator === userId);
-
-  if (!userRecipes.length) {
+  if (!recipes.length) {
     return <h3>No Recipes Yet</h3>;
   }
 
   return (
     <div>
       {showTitle && <h3>{title}</h3>}
-      {userRecipes.map((recipe) => (
+      {recipes.map((recipe) => (
         <div key={recipe._id} className="card mb-3">
+      
+
           <h4 className="card-header bg-primary text-light p-2 m-0">
             {showUsername ? (
               <Link
                 className="text-light"
-                to={`/recipes/${recipe._id}`}
+                to={`/recipes/${recipe._id}`} // 
               >
-                Created by {userId} <br />
+                Created by {recipe.createdBy.username} <br />
                 <span style={{ fontSize: '1rem' }}>
                   Created on {recipe.createdAt}
                 </span>
@@ -56,4 +54,4 @@ const UserRecipeList = ({
   );
 };
 
-export default UserRecipeList;
+export default RecipeList;
