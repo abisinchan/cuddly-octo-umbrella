@@ -31,6 +31,11 @@ const recipeSchema = new Schema(
       ref: 'User', //
       required: true,
     },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (createdAt) => dateFormat(createdAt), // Use dateFormat function
+    },
 
     comments: [
       {

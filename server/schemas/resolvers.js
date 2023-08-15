@@ -18,6 +18,7 @@ const resolvers = {
         ...user.toObject(),
         recipes: user.recipes.map(recipe => ({
           ...recipe.toObject(),
+          createdAt: recipe.createdAt.toString(),
           createdBy: {
             _id: user._id,
             username: user.username,
@@ -28,6 +29,7 @@ const resolvers = {
               _id: comment.commentAuthor._id,
               username: comment.commentAuthor.username,
             },
+            createdAt: comment.createdAt.toString(),
           })),
         })),
       }));
@@ -52,6 +54,9 @@ const resolvers = {
         ...user.toObject(),
         recipes: user.recipes.map(recipe => ({
           ...recipe.toObject(),
+
+          createdAt: recipe.createdAt.toString(),
+
           createdBy: {
             _id: user._id,
             username: user.username || '', // Provide a default value if username is null
@@ -64,6 +69,7 @@ const resolvers = {
                   username: comment.commentAuthor.username || '',
                 }
               : null,
+              createdAt: comment.createdAt.toString(),
           })),
         })),
       };
@@ -78,6 +84,9 @@ const resolvers = {
     
       return recipes.map(recipe => ({
         ...recipe.toObject(),
+
+        createdAt: recipe.createdAt.toString(),
+
         createdBy: {
           _id: recipe.createdBy._id,
           username: recipe.createdBy.username,
@@ -88,6 +97,7 @@ const resolvers = {
             _id: comment.commentAuthor._id,
             username: comment.commentAuthor.username,
           },
+          createdAt: comment.createdAt.toString(),
         })),
       }));
     },
@@ -103,22 +113,30 @@ const resolvers = {
         throw new Error("Recipe not found");
       }
     
+
+
       return {
         ...recipe.toObject(),
+        createdAt: recipe.createdAt.toString(),
+      
         createdBy: {
           _id: recipe.createdBy._id,
           username: recipe.createdBy.username,
         },
+    
+
         comments: recipe.comments.map(comment => ({
           ...comment.toObject(),
           commentAuthor: {
             _id: comment.commentAuthor._id,
             username: comment.commentAuthor.username,
           },
+          createdAt: comment.createdAt.toString(),
+         
         })),
       };
     },
-
+ 
     // View only recipes created by the logged-in user
     myRecipes: async (parent, { userId }) => {
       try {
@@ -138,6 +156,7 @@ const resolvers = {
         // Transform the recipes and populate relevant data
         const transformedRecipes = user.recipes.map(recipe => ({
           ...recipe.toObject(),
+          createdAt: recipe.createdAt.toString(),
           createdBy: {
             _id: user._id,
             username: user.username,
@@ -147,6 +166,7 @@ const resolvers = {
             commentAuthor: {
               _id: comment.commentAuthor._id,
               username: comment.commentAuthor.username,
+              createdAt: comment.createdAt.toString(),
             },
           })),
         }));
@@ -231,44 +251,45 @@ login: async (parent, { username, password }) => {
     },
     
     
-     // Resolver to add a new comment to a recipe
-     addComment: async (parent, { recipeId, commentText }, context) => {
-      if (context.user) {
-        try {
-          const user = await User.findById(context.user._id);
-    
-          const comment = {
-            commentText,
-            commentAuthor: {
-              _id: user._id,
-              username: user.username,
-            },
-          };
-    
-          const updatedRecipe = await Recipe.findByIdAndUpdate(
-            recipeId,
-            {
-              $addToSet: { comments: comment },
-            },
-            {
-              new: true,
-              runValidators: true,
-            }
-          ).populate({
-            path: 'comments.commentAuthor',
-            model: 'User',
-            select: 'username',
-          }).exec();
-    
-          return updatedRecipe;
-        } catch (error) {
-          console.error(error);
-          throw new Error('Error adding comment');
+
+// Resolver to add a new comment to a recipe
+addComment: async (parent, { recipeId, commentText }, context) => {
+  if (context.user) {
+    try {
+      const user = await User.findById(context.user._id);
+
+      const comment = {
+        commentText,
+        commentAuthor: {
+          _id: user._id,
+          username: user.username,
+        },
+      };
+
+      const updatedRecipe = await Recipe.findByIdAndUpdate(
+        recipeId,
+        {
+          $addToSet: { comments: comment },
+        },
+        {
+          new: true,
+          runValidators: true,
         }
-      }
-    
-      throw new AuthenticationError('You need to be logged in!');
-    },
+      ).populate({
+        path: 'comments.commentAuthor',
+        model: 'User',
+        select: 'username',
+      }).exec();
+
+      return updatedRecipe;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error adding comment');
+    }
+  }
+
+  throw new AuthenticationError('You need to be logged in!');
+},
 
 
     // Remove a recipe (authenticated)
@@ -336,8 +357,32 @@ removeComment: async (parent, { recipeId, commentId }, context) => {
   // Throw an error if user is not authenticated
   throw new AuthenticationError('You need to be logged in!');
 },
-  }
+
+
+    // Save a recipe (authenticated)
+    saveRecipe: async (parent, { recipeId }, context) => {
+      try {
+        if (context.user) {
+          // Fetch the authenticated user
+          const user = await User.findById(context.user._id);
+
+          // Update the user's savedRecipes array
+          await User.findByIdAndUpdate(
+            context.user._id,
+            { $addToSet: { savedRecipes: recipeId } }, // Use $addToSet to avoid duplicates
+            { new: true }
+          );
+
+          // Return the updated user
+          return user;
+        }
+        throw new AuthenticationError('You need to be logged in to save a recipe.');
+      } catch (error) {
+        console.error(error);
+        throw new Error('Error saving recipe');
+      }
+    },
+  },
 };
 
 module.exports = resolvers;
-

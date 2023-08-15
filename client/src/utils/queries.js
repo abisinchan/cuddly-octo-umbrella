@@ -95,11 +95,15 @@ query Recipe($recipeId: ID!) {
     comments {
       _id
       commentText
+      commentAuthor {
+        username
+      }
       createdAt
     }
   }
 }
 `;
+
 
 export const QUERY_MYRECIPES = gql`
 query MyRecipes($userId: ID!) {
@@ -122,4 +126,36 @@ query MyRecipes($userId: ID!) {
     }
   }
 }
+`;
+
+export const QUERY_SAVED_RECIPES = gql`
+  query savedRecipes($userId: ID!) {
+    user(userId: $userId) {
+      savedRecipes {
+        _id
+        title
+        ingredients
+        instructions
+        createdBy {
+          username
+        }
+        createdAt
+      }
+    }
+  }
+`;
+
+export const SAVE_RECIPE = gql`
+  mutation saveRecipe($recipeId: ID!) {
+    saveRecipe(recipeId: $recipeId) {
+      _id
+      title
+      ingredients
+      instructions
+      createdBy {
+        username
+      }
+      createdAt
+    }
+  }
 `;

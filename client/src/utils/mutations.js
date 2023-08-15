@@ -83,4 +83,3 @@ mutation RemoveComment($recipeId: ID!, $commentId: ID!) {
   }
 }
 `;
-

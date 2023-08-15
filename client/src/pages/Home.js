@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import AuthService from '../utils/auth'; // Provide the correct path
+import AuthService from '../utils/auth';
 
 import RecipeRandom from '../components/RecipeRandom';
 import RecipeForm from '../components/RecipeForm';
@@ -11,7 +11,7 @@ import { QUERY_RECIPES } from '../utils/queries';
 const Home = () => {
   const { loading, data } = useQuery(QUERY_RECIPES);
   const recipes = data?.recipes || [];
-  const isLoggedIn = AuthService.loggedIn(); // Check if user is logged in
+  const isLoggedIn = AuthService.loggedIn();
 
   return (
     <main>

@@ -1,19 +1,21 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import AuthService from '../utils/auth'; // Import your AuthService
+import AuthService from '../utils/auth';
 import RecipeForm from '../components/RecipeForm';
 import UserRecipeList from '../components/UserRecipeList';
-import { QUERY_RECIPES } from '../utils/queries';
+import { QUERY_MYRECIPES, QUERY_SAVED_RECIPES } from '../utils/queries';
 
 const Profile = () => {
-  const { loading, data } = useQuery(QUERY_RECIPES);
-  const recipes = data?.recipes || [];
-  
-  // Get the logged-in user's ID from AuthService
-  const loggedInUserId = AuthService.getProfile().id;
+  const { loading: myRecipesLoading, data: myRecipesData } = useQuery(QUERY_MYRECIPES, {
+    variables: { userId: AuthService.getProfile().id },
+  });
 
-  // Filter recipes based on the logged-in user's ID
-  const userRecipes = recipes.filter(recipe => recipe.creator === loggedInUserId);
+  const { loading: savedRecipesLoading, data: savedRecipesData } = useQuery(QUERY_SAVED_RECIPES, {
+    variables: { userId: AuthService.getProfile().id },
+  });
+
+  const userRecipes = myRecipesData?.myRecipes || [];
+  const savedRecipes = savedRecipesData?.user?.savedRecipes || [];
 
   return (
     <main>
@@ -28,11 +30,20 @@ const Profile = () => {
           <div className="row">
             <div className="col-md-7">
               <h2>Your Recipes</h2>
-              {loading ? <div>Loading...</div> : <UserRecipeList recipes={userRecipes} />}
+              {myRecipesLoading ? <div>Loading...</div> : <UserRecipeList recipes={userRecipes} />}
             </div>
             <div className="col-md-4">
               <h2>Saved Recipes</h2>
-              {/* Replace with your logic to display saved recipes from others */}
+              {savedRecipesLoading ? <div>Loading...</div> : (
+                <ul>
+                  {savedRecipes.map(recipe => (
+                    <li key={recipe._id}>
+                      <h3>{recipe.title}</h3>
+                      <p>Created by {recipe.createdBy.username}</p>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         </div>

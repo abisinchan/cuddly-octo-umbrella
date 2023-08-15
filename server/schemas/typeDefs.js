@@ -7,6 +7,7 @@ const typeDefs = gql`
     email: String!
     password: String!
     recipes: [Recipe]
+    savedRecipes: [Recipe]
    
   }
 
