@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const RecipeList = ({
+const UserRecipeList = ({ 
   recipes,
   title,
   showTitle = true,
@@ -10,9 +10,9 @@ const RecipeList = ({
   if (!recipes.length) {
     return <h3>No Recipes Yet</h3>;
   }
-
+  
   return (
-    <div>
+   <div>
       {showTitle && <h3>{title}</h3>}
       {recipes.map((recipe) => (
         <div key={recipe._id} className="card mb-3">
@@ -54,4 +54,4 @@ const RecipeList = ({
   );
 };
 
-export default RecipeList;
+export default UserRecipeList;

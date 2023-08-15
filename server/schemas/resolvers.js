@@ -144,12 +144,13 @@ const resolvers = {
             path: 'comments.commentAuthor',
             model: 'User',
           },
+          options: { sort: { createdAt: -1 } }, // Sort recipes by createdAt in descending order (newest to oldest)
         });
-
+    
         if (!user) {
           throw new Error('User not found');
         }
-
+    
         // Transform the recipes and populate relevant data
         const transformedRecipes = user.recipes.map(recipe => ({
           ...recipe.toObject(),
@@ -167,7 +168,7 @@ const resolvers = {
             },
           })),
         }));
-
+    
         return transformedRecipes;
       } catch (error) {
         console.error(error);

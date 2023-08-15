@@ -1,12 +1,16 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { useQuery } from '@apollo/client';
 import AuthService from '../utils/auth';
 import RecipeForm from '../components/RecipeForm';
 import UserRecipeList from '../components/UserRecipeList';
-import { QUERY_MYRECIPES, QUERY_SAVED_RECIPES } from '../utils/queries';
+import { QUERY_RECIPES, QUERY_SAVED_RECIPES } from '../utils/queries';
+
+
+
 
 const Profile = () => {
-  const { loading: myRecipesLoading, data: myRecipesData } = useQuery(QUERY_MYRECIPES, {
+
+  const { loading: myRecipesLoading, data: myRecipesData } = useQuery( QUERY_RECIPES, {
     variables: { userId: AuthService.getProfile().id },
   });
 
