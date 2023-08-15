@@ -113,8 +113,6 @@ const resolvers = {
         throw new Error("Recipe not found");
       }
     
-
-
       return {
         ...recipe.toObject(),
         createdAt: recipe.createdAt.toString(),
@@ -124,7 +122,6 @@ const resolvers = {
           username: recipe.createdBy.username,
         },
     
-
         comments: recipe.comments.map(comment => ({
           ...comment.toObject(),
           commentAuthor: {
@@ -179,7 +176,6 @@ const resolvers = {
     },
   },
   
-  
   Mutation: {
     // Add a user
  // Sign up and return token
@@ -227,7 +223,7 @@ login: async (parent, { username, password }) => {
           title,
           ingredients,
           instructions,
-          createdBy: user._id, // Set createdBy to the authenticated user's _id
+          createdBy: user._id,
         });
     
         await User.findOneAndUpdate(
@@ -250,8 +246,6 @@ login: async (parent, { username, password }) => {
       throw new Error("Authentication required to add a recipe.");
     },
     
-    
-
 // Resolver to add a new comment to a recipe
 addComment: async (parent, { recipeId, commentText }, context) => {
   if (context.user) {
@@ -291,7 +285,6 @@ addComment: async (parent, { recipeId, commentText }, context) => {
   throw new AuthenticationError('You need to be logged in!');
 },
 
-
     // Remove a recipe (authenticated)
    removeRecipe: async (parent, { recipeId }, context) => {
     // Check if a user is authenticated
@@ -315,7 +308,6 @@ addComment: async (parent, { recipeId, commentText }, context) => {
     throw new AuthenticationError('You need to be logged in!');
   },
 
-
 // Remove a comment (authenticated)
 removeComment: async (parent, { recipeId, commentId }, context) => {
   // Check if a user is authenticated
@@ -326,13 +318,13 @@ removeComment: async (parent, { recipeId, commentId }, context) => {
         {
           _id: recipeId,
           'comments._id': commentId,
-          'comments.commentAuthor': context.user._id, // Use context.user._id
+          'comments.commentAuthor': context.user._id,
         },
         {
           $pull: {
             comments: {
               _id: commentId,
-              commentAuthor: context.user._id, // Use context.user._id
+              commentAuthor: context.user._id,
             },
           },
         },
@@ -358,29 +350,28 @@ removeComment: async (parent, { recipeId, commentId }, context) => {
   throw new AuthenticationError('You need to be logged in!');
 },
 
+// Save a recipe (authenticated)
+saveRecipe: async (parent, { recipeId }, context) => {
+  try {
+  if (context.user) {
+    // Fetch the authenticated user
+    const user = await User.findById(context.user._id);
 
-    // Save a recipe (authenticated)
-    saveRecipe: async (parent, { recipeId }, context) => {
-      try {
-        if (context.user) {
-          // Fetch the authenticated user
-          const user = await User.findById(context.user._id);
+    // Update the user's savedRecipes array
+    await User.findByIdAndUpdate(
+    context.user._id,
+    { $addToSet: { savedRecipes: recipeId } },
+    { new: true }
+      );
 
-          // Update the user's savedRecipes array
-          await User.findByIdAndUpdate(
-            context.user._id,
-            { $addToSet: { savedRecipes: recipeId } }, // Use $addToSet to avoid duplicates
-            { new: true }
-          );
-
-          // Return the updated user
-          return user;
-        }
-        throw new AuthenticationError('You need to be logged in to save a recipe.');
-      } catch (error) {
-        console.error(error);
-        throw new Error('Error saving recipe');
+    // Return the updated user
+    return user;
       }
+    throw new AuthenticationError('You need to be logged in to save a recipe.');
+    } catch (error) {
+    console.error(error);
+    throw new Error('Error saving recipe');
+    }
     },
   },
 };

@@ -24,6 +24,12 @@ const userSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Recipe',
     }
+  ],
+  savedRecipes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Recipe',
+    }
   ]
 });
 
