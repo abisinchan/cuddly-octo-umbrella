@@ -1,6 +1,6 @@
 
 //import AuthService from '../utils/auth';
-import MyRecipeList from '../components/MyRecipe';
+import MyRecipeList from '../components/MyRecipeList';
 
 
 import React from 'react';

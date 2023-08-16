@@ -28,7 +28,9 @@ const Login = (props) => {
         variables: { ...formState },
       });
 
-      Auth.login(data.login.token);
+      const userId = data.login.user._id; //change
+      Auth.login(data.login.token, userId); // Save both token and user ID
+
     } catch (e) {
       console.error(e);
     }

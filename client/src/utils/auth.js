@@ -27,8 +27,18 @@ class AuthService {
     return localStorage.getItem('id_token');
   }
 
-  login(idToken) {
+  getUserId() { //change
+    const token = this.getToken();
+    console.log("token:", token );
+    const decodedToken = decode(token);
+    console.log("decodedtoken:", decodedToken );
+    console.log("decoded_Id:", decodedToken.data._id );
+    return decodedToken.data?._id || null;
+  }
+
+  login(idToken, userId) {
     localStorage.setItem('id_token', idToken);
+    localStorage.setItem('user_id', userId); //this is new change
     window.location.assign('/');
   }
 

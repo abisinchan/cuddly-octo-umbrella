@@ -2,23 +2,25 @@ import React, {useEffect, useState} from 'react';
 import { useQuery } from '@apollo/client';
 import AuthService from '../utils/auth';
 import RecipeForm from '../components/RecipeForm';
-import UserRecipeList from '../components/UserRecipeList';
-import { QUERY_RECIPES, QUERY_SAVED_RECIPES } from '../utils/queries';
+import MyRecipeList from '../components/MyRecipeList';
+import { QUERY_USER, QUERY_SAVED_RECIPES } from '../utils/queries';
 
 
 
 
 const Profile = () => {
-
-  const { loading: myRecipesLoading, data: myRecipesData } = useQuery( QUERY_RECIPES, {
-    variables: { userId: AuthService.getProfile().id },
+  // Fetch user's recipes using useQuery hook
+  const userId = AuthService.getUserId(); // Get user ID from local storage
+  console.log("User id:", userId);
+  const { loading, data } = useQuery(QUERY_USER, {
+    variables: { userId },
   });
 
   const { loading: savedRecipesLoading, data: savedRecipesData } = useQuery(QUERY_SAVED_RECIPES, {
     variables: { userId: AuthService.getProfile().id },
   });
 
-  const userRecipes = myRecipesData?.myRecipes || [];
+  const userRecipes = data?.user?.recipes || [];
   const savedRecipes = savedRecipesData?.user?.savedRecipes || [];
 
   return (
@@ -34,7 +36,7 @@ const Profile = () => {
           <div className="row">
             <div className="col-md-7">
               <h2>Your Recipes</h2>
-              {myRecipesLoading ? <div>Loading...</div> : <UserRecipeList recipes={userRecipes} />}
+              {loading ? <div>Loading...</div> : <MyRecipeList recipes={userRecipes} />}
             </div>
             <div className="col-md-4">
               <h2>Saved Recipes</h2>
