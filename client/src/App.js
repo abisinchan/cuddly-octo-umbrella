@@ -15,8 +15,8 @@ import SingleRecipe from './pages/SingleRecipe';
 import Profile from './pages/Profile';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import MyRecipe from './pages/MyRecipe';
-import UserProfilePage from './pages/UserRecipes';
+
+
 
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
@@ -55,8 +55,7 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/me" element={<Profile />} />
               <Route path="/recipes/:recipeId" element={<SingleRecipe />} />
-              <Route path="/myprofile/:userId" element={<MyRecipe />} />
-              <Route path="/userRecipes" element={<UserProfilePage />} />
+
             </Routes>
           </div>
           <Footer />

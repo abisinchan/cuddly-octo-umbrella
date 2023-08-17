@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
 import RecipeForm from '../components/RecipeForm';
@@ -8,13 +8,9 @@ import AuthService from '../utils/auth';
 import { QUERY_USER, QUERY_SAVED_RECIPES } from '../utils/queries';
 import { REMOVE_RECIPE } from '../utils/mutations';
 
-
-
 const Profile = () => {
-  // Fetch user's recipes using useQuery hook
-  const userId = AuthService.getUserId(); // Get user ID from local storage
-  console.log("User id:", userId);
-  const { loading, data } = useQuery(QUERY_USER, {
+  const userId = AuthService.getUserId();
+  const { loading: userLoading, data: userData } = useQuery(QUERY_USER, {
     variables: { userId },
   });
 
@@ -22,47 +18,45 @@ const Profile = () => {
     variables: { userId: AuthService.getProfile().id },
   });
 
-  const userRecipes = data?.user?.recipes || [];
-  const savedRecipes = savedRecipesData?.user?.savedRecipes || [];
+  const [userRecipes, setUserRecipes] = useState([]);
+  const [savedRecipes, setSavedRecipes] = useState([]);
+
+  useEffect(() => {
+    if (userData?.user) {
+      setUserRecipes(userData.user.recipes || []);
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    if (savedRecipesData?.user) {
+      setSavedRecipes(savedRecipesData.user.savedRecipes || []);
+    }
+  }, [savedRecipesData]);
 
   const [removeRecipe] = useMutation(REMOVE_RECIPE, {
     onError: (error) => {
       console.error('Error removing recipe:', error);
     },
     update: (cache, { data }) => {
-      // Update the local cache after successful removal
       const removedRecipeId = data.removeRecipe._id;
-      cache.modify({
-        fields: {
-          recipes(existingRecipes = [], { readField }) {
-            return existingRecipes.filter(
-              (recipeRef) => removedRecipeId !== readField('_id', recipeRef)
-            );
-          },
-        },
-      });
+      setUserRecipes(prevRecipes => prevRecipes.filter(recipe => recipe._id !== removedRecipeId));
     },
   });
 
-
   const handleRemoveRecipe = async (recipeId) => {
-
-
     try {
       const { data } = await removeRecipe({
         variables: { recipeId },
       });
-  
+
       if (data && data.removeRecipe) {
         const removedRecipeUserId = data.removeRecipe.createdBy._id;
-        const userId = AuthService.getUserId(); // Get user ID from local storage
+        const userId = AuthService.getUserId();
 
         if (removedRecipeUserId === userId) {
           console.log('Recipe removed successfully.');
-          // Optionally, you can update the local state here if needed
         } else {
           console.error('Recipe does not belong to the current user.');
-          // Provide feedback to the user that they can't delete this recipe
         }
       }
     } catch (error) {
@@ -83,7 +77,7 @@ const Profile = () => {
           <div className="row">
             <div className="col-md-7">
               <h2>Your Recipes</h2>
-              {loading ? <div>Loading...</div> : <MyRecipeList 
+              {userLoading ? <div>Loading...</div> : <MyRecipeList 
               recipes={userRecipes}
               handleRemoveRecipe={handleRemoveRecipe} // Pass the handleRemoveRecipe function
               authService={AuthService} // Pass the AuthService instance

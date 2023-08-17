@@ -59,6 +59,8 @@ const RecipeForm = () => {
     } catch (err) {
       console.error(err);
     }
+   // window.location.reload();
+     
   };
 
   const handleIngredientChange = (event) => {
