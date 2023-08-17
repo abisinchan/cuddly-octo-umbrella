@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
 import { ADD_RECIPE } from '../../utils/mutations';
-import { QUERY_RECIPES, QUERY_MYRECIPES } from '../../utils/queries';
+import { QUERY_RECIPES, QUERY_USER } from '../../utils/queries';
 
 import Auth from '../../utils/auth';
 
-const RecipeForm = () => {
+const RecipeForm = ({ addRecipeToList }) => {
   const [title, setTitle] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState('');
@@ -16,31 +16,37 @@ const RecipeForm = () => {
     update(cache, { data: { addRecipe } }) {
       try {
         const { recipes } = cache.readQuery({ query: QUERY_RECIPES });
-  
+
         cache.writeQuery({
           query: QUERY_RECIPES,
           data: { recipes: [addRecipe, ...recipes] },
         });
+
+        addRecipeToList(addRecipe);
       } catch (e) {
         console.error(e);
       }
-  
-      // Read the 'me' data from the cache if available
-      const cachedMe = cache.readQuery({ query: QUERY_MYRECIPES });
-  
-      // Update the 'me' data in the cache
+
+      // Read the 'user' data from the cache if available
+      const cachedUser = cache.readQuery({
+        query: QUERY_USER,
+        variables: { userId: Auth.getUserId() },
+      });
+
+      // Update the 'user' data in the cache
       cache.writeQuery({
-        query: QUERY_MYRECIPES,
+        query: QUERY_USER,
+        variables: { userId: Auth.getUserId() },
         data: {
-          me: {
-            ...cachedMe?.me,
-            recipes: [...(cachedMe?.me?.recipes || []), addRecipe],
+          user: {
+            ...cachedUser?.user,
+            recipes: [...(cachedUser?.user?.recipes || []), addRecipe],
           },
         },
       });
     },
   });
-
+  
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 

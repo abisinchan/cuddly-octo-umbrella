@@ -12,10 +12,12 @@ const Profile = () => {
   const userId = AuthService.getUserId();
   const { loading: userLoading, data: userData } = useQuery(QUERY_USER, {
     variables: { userId },
+
   });
 
   const { loading: savedRecipesLoading, data: savedRecipesData } = useQuery(QUERY_SAVED_RECIPES, {
     variables: { userId: AuthService.getProfile().id },
+
   });
 
   const [userRecipes, setUserRecipes] = useState([]);
@@ -64,6 +66,10 @@ const Profile = () => {
     }
   };
 
+  const addRecipeToList = (newRecipe) => {
+    setUserRecipes(prevRecipes => [newRecipe, ...prevRecipes]);
+  };
+
   return (
     <main>
       <div className="flex-row justify-center">
@@ -71,7 +77,7 @@ const Profile = () => {
           className="col-12 col-md-10 mb-3 p-3"
           style={{ border: '1px dotted #1a1a1a' }}
         >
-          <RecipeForm />
+          <RecipeForm addRecipeToList={addRecipeToList}/>
         </div>
         <div className="col-12">
           <div className="row">
