@@ -59,6 +59,7 @@ query User($userId: ID!) {
   }
 }
 `;
+
 export const QUERY_RECIPES = gql`
 query Recipes {
   recipes {
@@ -91,6 +92,7 @@ query Recipe($recipeId: ID!) {
     ingredients
     instructions
     createdBy {
+      _id
       username
     }
     createdAt
@@ -98,6 +100,7 @@ query Recipe($recipeId: ID!) {
       _id
       commentText
       commentAuthor {
+        _id
         username
       }
       createdAt
