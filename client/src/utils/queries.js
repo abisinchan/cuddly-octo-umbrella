@@ -36,23 +36,24 @@ query User($userId: ID!) {
     _id
     username
     email
-    password
     recipes {
       _id
       title
       ingredients
       instructions
+      createdAt
       createdBy {
+        _id
         username
       }
-      createdAt
       comments {
         _id
+        createdAt
         commentText
         commentAuthor {
+          _id
           username
         }
-        createdAt
       }
     }
   }
@@ -65,10 +66,11 @@ query Recipes {
     title
     ingredients
     instructions
+    createdAt
     createdBy {
+      _id
       username
     }
-    createdAt
     comments {
       _id
       commentText

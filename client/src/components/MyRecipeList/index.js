@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const MyRecipeList = ({ recipes }) => {
+const MyRecipeList = ({ recipes, handleRemoveRecipe, authService }) => {
   return (
     <div>
       {recipes.length === 0 ? (
@@ -28,6 +27,14 @@ const MyRecipeList = ({ recipes }) => {
               >
                 View Recipe Details
               </Link>
+              {recipe.createdBy._id === authService.getUserId() && (
+                <button
+                  className="btn btn-danger btn-block btn-squared"
+                  onClick={() => handleRemoveRecipe(recipe._id)}
+                >
+                  Remove Recipe
+                </button>
+              )}
             </div>
           ))}
         </div>

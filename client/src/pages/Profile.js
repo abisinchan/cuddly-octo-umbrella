@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import { useQuery } from '@apollo/client';
-import AuthService from '../utils/auth';
+import { useQuery, useMutation } from '@apollo/client';
+
 import RecipeForm from '../components/RecipeForm';
 import MyRecipeList from '../components/MyRecipeList';
-import { QUERY_USER, QUERY_SAVED_RECIPES } from '../utils/queries';
 
+import AuthService from '../utils/auth';
+import { QUERY_USER, QUERY_SAVED_RECIPES } from '../utils/queries';
+import { REMOVE_RECIPE } from '../utils/mutations';
 
 
 
@@ -23,6 +25,51 @@ const Profile = () => {
   const userRecipes = data?.user?.recipes || [];
   const savedRecipes = savedRecipesData?.user?.savedRecipes || [];
 
+  const [removeRecipe] = useMutation(REMOVE_RECIPE, {
+    onError: (error) => {
+      console.error('Error removing recipe:', error);
+    },
+    update: (cache, { data }) => {
+      // Update the local cache after successful removal
+      const removedRecipeId = data.removeRecipe._id;
+      cache.modify({
+        fields: {
+          recipes(existingRecipes = [], { readField }) {
+            return existingRecipes.filter(
+              (recipeRef) => removedRecipeId !== readField('_id', recipeRef)
+            );
+          },
+        },
+      });
+    },
+  });
+
+
+  const handleRemoveRecipe = async (recipeId) => {
+
+
+    try {
+      const { data } = await removeRecipe({
+        variables: { recipeId },
+      });
+  
+      if (data && data.removeRecipe) {
+        const removedRecipeUserId = data.removeRecipe.createdBy._id;
+        const userId = AuthService.getUserId(); // Get user ID from local storage
+
+        if (removedRecipeUserId === userId) {
+          console.log('Recipe removed successfully.');
+          // Optionally, you can update the local state here if needed
+        } else {
+          console.error('Recipe does not belong to the current user.');
+          // Provide feedback to the user that they can't delete this recipe
+        }
+      }
+    } catch (error) {
+      console.error('Error removing recipe:', error);
+    }
+  };
+
   return (
     <main>
       <div className="flex-row justify-center">
@@ -36,7 +83,11 @@ const Profile = () => {
           <div className="row">
             <div className="col-md-7">
               <h2>Your Recipes</h2>
-              {loading ? <div>Loading...</div> : <MyRecipeList recipes={userRecipes} />}
+              {loading ? <div>Loading...</div> : <MyRecipeList 
+              recipes={userRecipes}
+              handleRemoveRecipe={handleRemoveRecipe} // Pass the handleRemoveRecipe function
+              authService={AuthService} // Pass the AuthService instance
+              />}
             </div>
             <div className="col-md-4">
               <h2>Saved Recipes</h2>

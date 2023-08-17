@@ -6,6 +6,9 @@ const RecipeList = ({
   title,
   showTitle = true,
   showUsername = true,
+  isLoggedIn,
+  handleRemoveRecipe,
+  authService, // Accept the authService prop
 }) => {
   if (!recipes.length) {
     return <h3>No Recipes Yet</h3>;
@@ -16,24 +19,15 @@ const RecipeList = ({
       {showTitle && <h3>{title}</h3>}
       {recipes.map((recipe) => (
         <div key={recipe._id} className="card mb-3">
-      
-
           <h4 className="card-header bg-primary text-light p-2 m-0">
             {showUsername ? (
-              <Link
-                className="text-light"
-                to={`/recipes/${recipe._id}`} // 
-              >
+              <Link className="text-light" to={`/recipes/${recipe._id}`}>
                 Created by {recipe.createdBy.username} <br />
-                <span style={{ fontSize: '1rem' }}>
-                  Created on {recipe.createdAt}
-                </span>
+                <span style={{ fontSize: '1rem' }}>Created on {recipe.createdAt}</span>
               </Link>
             ) : (
               <>
-                <span style={{ fontSize: '1rem' }}>
-                  Created on {recipe.createdAt}
-                </span>
+                <span style={{ fontSize: '1rem' }}>Created on {recipe.createdAt}</span>
               </>
             )}
           </h4>
@@ -48,6 +42,14 @@ const RecipeList = ({
           >
             View Recipe Details
           </Link>
+          {isLoggedIn && recipe.createdBy._id === authService.getUserId() && (
+            <button
+              className="btn btn-danger btn-block btn-squared"
+              onClick={() => handleRemoveRecipe(recipe._id)}
+            >
+              Remove Recipe
+            </button>
+          )}
         </div>
       ))}
     </div>
