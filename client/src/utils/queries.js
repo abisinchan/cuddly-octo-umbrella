@@ -59,7 +59,6 @@ query User($userId: ID!) {
   }
 }
 `;
-
 export const QUERY_RECIPES = gql`
 query Recipes {
   recipes {
@@ -138,13 +137,6 @@ export const QUERY_SAVED_RECIPES = gql`
     user(userId: $userId) {
       savedRecipes {
         _id
-        title
-        ingredients
-        instructions
-        createdBy {
-          username
-        }
-        createdAt
       }
     }
   }
@@ -154,13 +146,6 @@ export const SAVE_RECIPE = gql`
   mutation saveRecipe($recipeId: ID!) {
     saveRecipe(recipeId: $recipeId) {
       _id
-      title
-      ingredients
-      instructions
-      createdBy {
-        username
-      }
-      createdAt
     }
   }
 `;

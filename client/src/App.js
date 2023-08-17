@@ -16,8 +16,6 @@ import Profile from './pages/Profile';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
-
-
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -25,9 +23,7 @@ const httpLink = createHttpLink({
 
 // Construct request middleware that will attach the JWT token to every request as an `authorization` header
 const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
   const token = localStorage.getItem('id_token');
-  // return the headers to the context so httpLink can read them
   return {
     headers: {
       ...headers,
@@ -50,12 +46,30 @@ function App() {
           <Header />
           <div className="container">
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/me" element={<Profile />} />
-              <Route path="/recipes/:recipeId" element={<SingleRecipe />} />
-
+              <Route 
+                path="/"
+                element={<Home />}
+              />
+              <Route 
+                path="/login"
+                element={<Login />}
+              />
+              <Route 
+                path="/signup"
+                element={<Signup />}
+              />
+              <Route 
+                path="/me"
+                element={<Profile />}
+              />
+              <Route 
+                path="/profiles/:username"
+                element={<Profile />}
+              />
+              <Route 
+                path="/recipes/:recipeId"
+                element={<SingleRecipe />}
+              />
             </Routes>
           </div>
           <Footer />

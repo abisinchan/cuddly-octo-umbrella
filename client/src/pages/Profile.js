@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState }  from 'react';
 import { useQuery, useMutation } from '@apollo/client';
+
 
 import RecipeForm from '../components/RecipeForm';
 import MyRecipeList from '../components/MyRecipeList';
@@ -9,17 +10,15 @@ import { QUERY_USER, QUERY_SAVED_RECIPES } from '../utils/queries';
 import { REMOVE_RECIPE } from '../utils/mutations';
 
 const Profile = () => {
-  const userId = AuthService.getUserId();
+  // Fetch user's recipes using useQuery hook
+  const userId = AuthService.getUserId(); // Get user ID from local storage
   const { loading: userLoading, data: userData } = useQuery(QUERY_USER, {
     variables: { userId },
-
   });
 
   const { loading: savedRecipesLoading, data: savedRecipesData } = useQuery(QUERY_SAVED_RECIPES, {
     variables: { userId: AuthService.getProfile().id },
-
   });
-
   const [userRecipes, setUserRecipes] = useState([]);
   const [savedRecipes, setSavedRecipes] = useState([]);
 
@@ -34,6 +33,7 @@ const Profile = () => {
       setSavedRecipes(savedRecipesData.user.savedRecipes || []);
     }
   }, [savedRecipesData]);
+  
 
   const [removeRecipe] = useMutation(REMOVE_RECIPE, {
     onError: (error) => {
@@ -83,8 +83,9 @@ const Profile = () => {
           <div className="row">
             <div className="col-md-7">
               <h2>Your Recipes</h2>
-              {userLoading ? <div>Loading...</div> : <MyRecipeList 
-              recipes={userRecipes}
+              {userLoading ?  <div>Loading...</div> : 
+              <MyRecipeList 
+              recipes={userRecipes} 
               handleRemoveRecipe={handleRemoveRecipe} // Pass the handleRemoveRecipe function
               authService={AuthService} // Pass the AuthService instance
               />}

@@ -7,7 +7,7 @@ import { QUERY_RECIPES, QUERY_USER } from '../../utils/queries';
 
 import Auth from '../../utils/auth';
 
-const RecipeForm = ({ addRecipeToList }) => {
+const RecipeForm = () => {
   const [title, setTitle] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState('');
@@ -16,23 +16,20 @@ const RecipeForm = ({ addRecipeToList }) => {
     update(cache, { data: { addRecipe } }) {
       try {
         const { recipes } = cache.readQuery({ query: QUERY_RECIPES });
-
+  
         cache.writeQuery({
           query: QUERY_RECIPES,
           data: { recipes: [addRecipe, ...recipes] },
         });
-
-        addRecipeToList(addRecipe);
       } catch (e) {
         console.error(e);
       }
-
-      // Read the 'user' data from the cache if available
+  
       const cachedUser = cache.readQuery({
         query: QUERY_USER,
         variables: { userId: Auth.getUserId() },
       });
-
+  
       // Update the 'user' data in the cache
       cache.writeQuery({
         query: QUERY_USER,
@@ -46,7 +43,7 @@ const RecipeForm = ({ addRecipeToList }) => {
       });
     },
   });
-  
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -65,13 +62,11 @@ const RecipeForm = ({ addRecipeToList }) => {
     } catch (err) {
       console.error(err);
     }
-   // window.location.reload();
-     
   };
 
   const handleIngredientChange = (event) => {
-    const { value } = event.target;
-    setIngredients(value.split(','));
+    const newValue = event.target.value;
+    setIngredients(newValue.split(',').map(item => item.trim()));
   };
 
   return (
